@@ -1,9 +1,10 @@
 import requests
 from rich import print
 from time import sleep
-
+import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from cachetools import cached, LRUCache
+from src.cache import cache
 
 
 client_id = "ROUB2CQ40GYN2UMEOMBMOEQKEP2QYDE4BPT3YBMGBRXQMKDK"
@@ -33,7 +34,7 @@ def get_trending_venues(lat: float, lng: float, client_id: str, client_secret: s
         "client_id": client_id,
         "client_secret": client_secret,
         "radius": 10000,  # 10km radius
-        "limit": 50
+        "limit": 30
     }
     
     headers = {"accept": "application/json"}
@@ -59,11 +60,8 @@ def get_venue_details(venue_id: str) -> dict:
     response = requests.get(url, params=params, headers=headers)
     return response.json()
 
-    
 
-def main():
-    points = RIYADH
-    
+def get_all_venues(points: list[tuple[float, float]]):
     all_venues = dict()
     for point in points:
         lat, lng = point
@@ -75,30 +73,28 @@ def main():
             venues = result['response'].get('venues', [])
             for venue in venues:
                 all_venues[venue['id']] = venue
-            
+    return all_venues
 
-    total_venues = sum(len(venues) for venues in all_venues.values())
+def con_get_venue_details(venue_id: str):
+    venue = cache.data.get(venue_id)
+    if venue:
+        return venue
+    venue = get_venue_details(venue_id)
+    cache.data[venue_id] = venue.get('response', {}).get("venue", {})
+    return cache.data[venue_id]
+
+
+def main():
+    all_venues = get_all_venues(RIYADH)
+    total_venues = len(set(all_venues.keys()))
     print(f"[green]Total trending venues found: {total_venues}[/green]")
     
-    categories = set()
-    for venue in all_venues.values():
-        categories.add(venue['categories'][0]['name'])
-    
-    print(categories)
-    # for venue in all_venues.values():
-        # print(get_venue_details(venue['id']))
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futures = [executor.submit(con_get_venue_details, venue['id']) for venue in all_venues.values()]
 
-    # for venue in all_venues.values():
-    #     print(f"[green]Found {len(venues)} trending venues at this location[/green]")
-    #     venues_details = {}
-    #     with ThreadPoolExecutor(max_workers=1) as executor:
-    #         futures = [executor.submit(get_venue_details, venue['id']) for venue in venues]
-    #         for future in as_completed(futures):
-    #             venue_details = future.result()
-    #             try:
-    #                 venues_details[venue_details['response']['venue']['id']] = venue_details['response'].get("venue", {})
-    #             except:
-    #                 print(venue_details)
+    print("[bold][green]Done[/green][/bold]")
+
+    sleep(10)
     #     # Print venue details
     #     for venue in venues:
     #         venue_details = venues_details[venue['id']]
@@ -107,10 +103,7 @@ def main():
     #     # Add delay to avoid hitting rate limits
     #     sleep(1)
     
-    # Print summary
-    print("\n[bold]Summary:[/bold]")
-    total_venues = sum(len(venues) for venues in all_venues.values())
-    print(f"[green]Total trending venues found: {total_venues}[/green]")
+
 
 if __name__ == "__main__":
     main()
