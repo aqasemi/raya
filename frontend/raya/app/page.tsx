@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Send, ChevronDown, Settings, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,6 +14,14 @@ export default function Page() {
   const [message, setMessage] = useState("")
   const [isOpen, setIsOpen] = useState(true)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+  const [mapKey, setMapKey] = useState(0)
+
+  // Force re-render of MapView when panels are resized
+  useEffect(() => {
+    const handleResize = () => setMapKey((prev) => prev + 1)
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   return (
     <div className="h-[100vh] overflow-hidden">
@@ -88,7 +96,7 @@ export default function Page() {
         <Panel>
           <PanelGroup direction="horizontal" className="h-full">
             <Panel className="h-full">
-              <MapView className="h-full" />
+              <MapView key={mapKey} className="h-full" />
             </Panel>
             <PanelResizeHandle className="w-1 bg-border hover:bg-primary transition-colors" />
             <Panel defaultSize={30} minSize={20}>

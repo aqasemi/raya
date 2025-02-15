@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Raya - Your Travel Guide in Saudi",
+  title: "Raya - Your Saudi Arabia Travel Guide",
   description: "Discover trendy and historical places in Saudi Arabia",
 }
 
