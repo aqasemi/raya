@@ -14,21 +14,18 @@ export default function Page() {
   const [message, setMessage] = useState("")
   const [isOpen, setIsOpen] = useState(true)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
-  const [mapKey, setMapKey] = useState(0)
+  const [resizeCount, setResizeCount] = useState(0)
 
-  // Force re-render of MapView when panels are resized
-  useEffect(() => {
-    const handleResize = () => setMapKey((prev) => prev + 1)
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  const handlePanelResize = () => {
+    setResizeCount(prev => prev + 1)
+  }
 
   return (
     <div className="h-[100vh] overflow-hidden">
-      <PanelGroup direction="horizontal" className="h-full">
+      <PanelGroup direction="horizontal" className="h-full" onLayout={handlePanelResize}>
         <Panel
           defaultSize={20}
-          minSize={5}
+          minSize={10}
           maxSize={30}
           onCollapse={() => setIsSidebarCollapsed(true)}
           onExpand={() => setIsSidebarCollapsed(false)}
@@ -94,9 +91,9 @@ export default function Page() {
         </Panel>
         <PanelResizeHandle className="w-1 bg-border hover:bg-primary transition-colors" />
         <Panel>
-          <PanelGroup direction="horizontal" className="h-full">
+          <PanelGroup direction="horizontal" className="h-full" onLayout={handlePanelResize}>
             <Panel className="h-full">
-              <MapView key={mapKey} className="h-full" />
+              <MapView onPanelResize={resizeCount} className="h-full" />
             </Panel>
             <PanelResizeHandle className="w-1 bg-border hover:bg-primary transition-colors" />
             <Panel defaultSize={30} minSize={20}>

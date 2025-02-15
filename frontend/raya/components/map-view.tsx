@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css"
 
 interface MapViewProps {
   className?: string
+  onPanelResize?: number
 }
 
 // Initialize Mapbox access token
@@ -19,17 +20,37 @@ mapboxgl.setRTLTextPlugin(
   true, // Lazy load the plugin
 )
 
-export function MapView({ className }: MapViewProps) {
+export function MapView({ className, onPanelResize }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
+  const resizeTimer = useRef<NodeJS.Timeout>()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // Handle smooth resize
+  const handleResize = () => {
+    if (resizeTimer.current) {
+      clearTimeout(resizeTimer.current)
+    }
+    
+    resizeTimer.current = setTimeout(() => {
+      if (map.current) {
+        map.current.resize()
+      }
+    }, 100)
+  }
+
+  // Listen for panel resize events
+  useEffect(() => {
+    if (onPanelResize) {
+      handleResize()
+    }
+  }, [onPanelResize])
 
   useEffect(() => {
     if (!mapContainer.current) return
 
     try {
-      // Initialize map
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/streets-v12",
@@ -48,7 +69,6 @@ export function MapView({ className }: MapViewProps) {
         console.log("Map loaded successfully")
         setLoading(false)
 
-        // Example: Add a label in Arabic
         if (map.current) {
           map.current.addLayer({
             id: "arabic-label",
@@ -139,6 +159,9 @@ export function MapView({ className }: MapViewProps) {
       if (map.current) {
         map.current.remove()
       }
+      if (resizeTimer.current) {
+        clearTimeout(resizeTimer.current)
+      }
     }
   }, [])
 
@@ -153,8 +176,8 @@ export function MapView({ className }: MapViewProps) {
   }, [])
 
   return (
-    <div className={`relative w-full h-full ${className}`}>
-      <div ref={mapContainer} className="absolute inset-0" />
+    <div className={`relative w-full h-full min-h-[400px] ${className}`}>
+      <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
       {loading && (
         <div className="absolute inset-0 bg-muted/50 flex items-center justify-center">
           <p className="text-muted-foreground">Loading map...</p>

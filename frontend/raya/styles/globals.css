@@ -75,3 +75,19 @@
   }
 }
 
+/* Custom styles for resize handles */
+[data-panel-group-direction="horizontal"] > [data-panel-resize-handle] {
+  width: 4px;
+  cursor: col-resize;
+}
+
+[data-panel-group-direction="vertical"] > [data-panel-resize-handle] {
+  height: 4px;
+  cursor: row-resize;
+}
+
+/* Ensure the map container takes up full height */
+.mapboxgl-map {
+  height: 100%;
+}
+
