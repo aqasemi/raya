@@ -89,7 +89,7 @@ def con_get_venue_details(venue_id: str):
     return cache.venues[venue_id]
 
 
-def main():
+def worker():
     while True:
         all_venues = get_all_venues(RIYADH)
         total_venues = len(set(all_venues.keys()))
@@ -104,9 +104,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    worker()
      
-# refer to cache.py for:
-# - get_venue_ratings
-# - get_top_venues
-# - clean_venue_details
