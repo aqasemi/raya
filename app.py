@@ -61,30 +61,16 @@ def index():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    hc = {
-        "give me top places in riyadh": """The top venues in Riyadh are: 
-1. Camel Step Roasters (محمصة خطوة جمل) {idx: 24}
-2. SHOTS {idx: 23}
-3. BELMONT Coffee House {idx: 25}
-4. COYARD Coffee Roasters {idx: 60}
-5. Knoll Coffee Roasters (محمصة و مقهى نول) {idx: 26}
-"""
-    }
-
     message = request.get_json().get('message')
     if not message:
         return jsonify({"error": "No message provided"}), 400
 
     try:
-        # Invoke the chatbot graph with the message
-        if message not in hc:
-            response = graph.invoke({
-                "messages": [HumanMessage(content=message)]
-            }, config)
-            
-            assistant_message = response["messages"][-1].content
-        else:
-            assistant_message = hc[message]
+        response = graph.invoke({
+            "messages": [HumanMessage(content=message)]
+        }, config)
+        
+        assistant_message = response["messages"][-1].content
         
         return jsonify({
             "message": assistant_message
