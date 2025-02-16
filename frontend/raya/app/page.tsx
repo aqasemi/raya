@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Send, ChevronDown, Settings, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,7 +17,7 @@ export default function Page() {
   const [resizeCount, setResizeCount] = useState(0)
 
   const handlePanelResize = () => {
-    setResizeCount(prev => prev + 1)
+    setResizeCount((prev) => prev + 1)
   }
 
   return (
@@ -40,7 +40,7 @@ export default function Page() {
           ) : (
             <div className="h-full flex flex-col bg-card">
               <div className="p-4">
-                <h1 className="text-2xl font-bold text-primary">raya</h1>
+                <h1 className="text-2xl font-bold text-primary">Raya</h1>
               </div>
               <Separator />
               <ScrollArea className="flex-1">
