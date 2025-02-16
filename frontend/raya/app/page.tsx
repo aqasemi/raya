@@ -102,7 +102,7 @@ export default function Page() {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/trending-venues")
+        const response = await fetch("http://172.20.10.2:5000/api/trending-venues")
         const data = await response.json()
         setVenues(data)
         setFilteredVenues(data)
@@ -246,6 +246,7 @@ export default function Page() {
                 venuesFilter={selectedCategory} 
                 onPanelResize={resizeCount} 
                 className="h-full" 
+                showHistoricalPlaces={true}
               />
             </Panel>
             <PanelResizeHandle className="w-1 bg-border hover:bg-primary transition-colors" />

@@ -199,6 +199,7 @@ export function MapView({ className, onPanelResize, venuesFilter, showHistorical
         el.style.backgroundSize = "100%"
         el.style.borderRadius = "50%"
         el.style.backgroundColor = "#4a5568"
+        el.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24' fill='white'%3E%3Cpath d='M240-160v-400h80v400h-80Zm200 0v-400h80v400h-80Zm200 0v-400h80v400h-80ZM160-600v-80l320-200 320 200v80H160Z'/%3E%3C/svg%3E")`
 
         const marker = new mapboxgl.Marker(el)
           .setLngLat([place.coordinates[1], place.coordinates[0]])
