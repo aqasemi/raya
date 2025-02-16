@@ -10,14 +10,61 @@ import { MapView } from "@/components/map-view"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export default function Page() {
   const [message, setMessage] = useState("")
   const [isOpen, setIsOpen] = useState(true)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [resizeCount, setResizeCount] = useState(0)
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: 'assistant',
+      content: 'Welcome to Raya! I can help you discover amazing places in Saudi Arabia. What would you like to know about?'
+    }
+  ])
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePanelResize = () => {
     setResizeCount((prev) => prev + 1)
+  }
+
+  const sendMessage = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!message.trim() || isLoading) return
+
+    const userMessage = message.trim()
+    setMessage("")
+    
+    // Add user message to chat
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }])
+    
+    setIsLoading(true)
+    try {
+      const response = await fetch('http://172.20.10.2:5000/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userMessage }),
+      })
+
+      if (!response.ok) throw new Error('Failed to send message')
+      
+      const data = await response.json()
+      setMessages(prev => [...prev, { role: 'assistant', content: data.message }])
+    } catch (error) {
+      console.error('Error sending message:', error)
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: 'Sorry, I encountered an error processing your message.' 
+      }])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -104,29 +151,28 @@ export default function Page() {
                 </div>
                 <ScrollArea className="flex-1 p-4">
                   <div className="space-y-4">
-                    <div className="bg-muted p-4 rounded-lg">
-                      <p className="text-sm">
-                        Welcome to Raya! I can help you discover amazing places in Saudi Arabia. What would you like to
-                        know about?
-                      </p>
-                    </div>
+                    {messages.map((msg, index) => (
+                      <div
+                        key={index}
+                        className={`p-4 rounded-lg ${
+                          msg.role === 'assistant' ? 'bg-muted' : 'bg-primary/10'
+                        }`}
+                      >
+                        <p className="text-sm">{msg.content}</p>
+                      </div>
+                    ))}
                   </div>
                 </ScrollArea>
                 <div className="p-4 border-t">
-                  <form
-                    className="flex gap-2"
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      setMessage("")
-                    }}
-                  >
+                  <form className="flex gap-2" onSubmit={sendMessage}>
                     <Input
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Type your message..."
                       className="flex-1"
+                      disabled={isLoading}
                     />
-                    <Button type="submit" size="icon">
+                    <Button type="submit" size="icon" disabled={isLoading}>
                       <Send className="h-4 w-4" />
                       <span className="sr-only">Send message</span>
                     </Button>

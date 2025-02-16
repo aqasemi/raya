@@ -69,7 +69,10 @@ def filter_venues(venues: list) -> list:
             continue
             
         for category in venue['categories']:
-            if is_allowed_category(category.get('name', '')):
+            if isinstance(category, dict):
+                category = category.get("name")
+                
+            if is_allowed_category(category):
                 filtered_venues.append(venue)
                 break
                 

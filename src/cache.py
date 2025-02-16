@@ -89,17 +89,20 @@ class GEOCache:
             venue['hereNow'].pop('groups', None)
 
         venue.pop('stats', None)
-        venue['categories'] = [i['name'] for i in venue['categories']]
+        try:
+            venue['categories'] = [i['name'] for i in venue['categories']]
+        except:
+            pass
         venue['location'] = {
             "lat": venue['location']['lat'],
             "lng": venue['location']['lng'],
-            "address": venue['location']['formattedAddress']
+            "address": venue.get('location', {}).get('formattedAddress', {})
         }
 
         return venue
 
     def get_top_venues(self, n: int=5, location: tuple[float, float] = None, category: Categories = Categories.ALL, price_tier: PriceTier = PriceTier.ALL) -> list[dict]:
-        venues = filter_venues([self.clean_venue_details(i) for i in self.venues.values()])
+        venues = filter_venues([self.clean_venue_details(i) for i in self.venues.copy().values()])
         venues = sorted(venues, key=lambda x: max(x.get('rating', 0), 6)/2 * x['hereNow']['count'], reverse=True)
 
         if category != Categories.ALL:
@@ -111,7 +114,7 @@ class GEOCache:
         return venues[:n]
     
     def get_venue_ratings(self, venue_id: str) -> list[dict]:
-        venue: dict = self.venues.get(venue_id)
+        venue: dict = self.get_venue_by_id(venue_id)
         if not venue:
             return []
         
@@ -127,6 +130,11 @@ class GEOCache:
 
         return comments
 
-        
+    def get_venue_by_id(self, venue_id: str) -> dict:
+        for v in self.venues.copy().values():
+            if v['idx'] == venue_id:
+                return v
+        return {}
+
 
 cache = GEOCache()

@@ -80,7 +80,7 @@ export function MapView({ className, onPanelResize }: MapViewProps) {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/trending-venues")
+        const response = await fetch("http://172.20.10.2:5000/api/trending-venues")
         const data = await response.json()
         setVenues(data)
       } catch (err) {
@@ -128,7 +128,9 @@ export function MapView({ className, onPanelResize }: MapViewProps) {
 
         const el = document.createElement("div")
         el.className = "custom-marker"
-        el.style.backgroundImage = `url(${venue.categories[0].icon.prefix}88${venue.categories[0].icon.suffix})`
+        try {
+          el.style.backgroundImage = `url(${venue.categories[0].icon.prefix}88${venue.categories[0].icon.suffix})`
+        } catch {}
         el.style.width = "24px"
         el.style.height = "24px"
         el.style.backgroundSize = "100%"
