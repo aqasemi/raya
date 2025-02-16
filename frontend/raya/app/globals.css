@@ -76,3 +76,70 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom styles for resize handles */
+[data-panel-group-direction="horizontal"] > [data-panel-resize-handle] {
+  width: 4px;
+  cursor: col-resize;
+}
+
+[data-panel-group-direction="vertical"] > [data-panel-resize-handle] {
+  height: 4px;
+  cursor: row-resize;
+}
+
+/* Ensure the map container takes up full height */
+.mapboxgl-map {
+  height: 100%;
+}
+
+/* Markdown styles */
+.markdown {
+  @apply text-sm leading-normal;
+}
+
+.markdown p {
+  @apply mb-4;
+}
+
+.markdown h1 {
+  @apply text-2xl font-bold mb-4;
+}
+
+.markdown h2 {
+  @apply text-xl font-bold mb-3;
+}
+
+.markdown h3 {
+  @apply text-lg font-bold mb-2;
+}
+
+.markdown ul,
+.markdown ol {
+  @apply mb-4 pl-5;
+}
+
+.markdown ul {
+  @apply list-disc;
+}
+
+.markdown ol {
+  @apply list-decimal;
+}
+
+.markdown li {
+  @apply mb-1;
+}
+
+.markdown code {
+  @apply font-mono bg-gray-100 rounded px-1;
+}
+
+.markdown pre {
+  @apply bg-gray-100 rounded p-3 mb-4 overflow-x-auto;
+}
+
+.markdown blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic mb-4;
+}
+

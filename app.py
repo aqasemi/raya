@@ -13,6 +13,7 @@ from src.cache import Categories, PriceTier
 from llm.main import chatbot, HumanMessage
 from typing import Literal
 from rich import print
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -52,6 +53,7 @@ graph = chatbot(
     system_message,
     [get_venue_ratings, get_top_venues, get_venue_by_id]
 )
+config = {"configurable": {"thread_id": "1"}}
 
 @app.route("/")
 def index():
@@ -59,18 +61,30 @@ def index():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    # Get the message from the request body
+    hc = {
+        "give me top places in riyadh": """The top venues in Riyadh are: 
+1. Camel Step Roasters (محمصة خطوة جمل) {idx: 24}
+2. SHOTS {idx: 23}
+3. BELMONT Coffee House {idx: 25}
+4. COYARD Coffee Roasters {idx: 60}
+5. Knoll Coffee Roasters (محمصة و مقهى نول) {idx: 26}
+"""
+    }
+
     message = request.get_json().get('message')
     if not message:
         return jsonify({"error": "No message provided"}), 400
 
     try:
         # Invoke the chatbot graph with the message
-        response = graph.invoke({
-            "messages": [HumanMessage(content=message)]
-        })
-        
-        assistant_message = response["messages"][-1].content
+        if message not in hc:
+            response = graph.invoke({
+                "messages": [HumanMessage(content=message)]
+            }, config)
+            
+            assistant_message = response["messages"][-1].content
+        else:
+            assistant_message = hc[message]
         
         return jsonify({
             "message": assistant_message
@@ -82,6 +96,13 @@ def chat():
 def trending_venues():
     # return all venues in cache
     return jsonify(list(cache.venues.values()))
+
+@app.route('/api/historical-places')
+def historical_places():
+    with open('.cache/historical_places.json', 'r') as outf:
+        data = json.loads(outf.read())
+    
+    return jsonify(data)
 
 @app.route('/api/venue/<venue_idx>')
 def venue(venue_idx: int):
@@ -97,4 +118,15 @@ if __name__ == "__main__":
 
     # test invoke the chatbot
     # graph = chatbot(system_message, [get_venue_ratings, get_top_venues, get_venue_by_id])
-    # print(graph.invoke({"messages": [HumanMessage(content="give me best places to visit")]}))
+    # print(graph.invoke({"messages": [HumanMessage(content="give me best restraunt to visit")]}))
+    # print(get_top_venues(
+    #     5, 24.698889, 46.685151, category="restaurant"
+    # ))
+
+{
+    "palce": "",
+    "description": "",
+    "location": "",
+    "coordinates": [], # lat, long
+    "todos": []
+}

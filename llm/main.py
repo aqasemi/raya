@@ -37,16 +37,32 @@ def chatbot(sysMessage: str, tools: List[Callable[..., Any]]):
         except requests.exceptions.RequestException:
             return "Error fetching URL"
 
-    tools = tools + [fetch_page]
-    print(tools)
+    tools = tools
     llm = ChatOpenAI(model="gpt-4o")
     llm_with_tools = llm.bind_tools(tools)
 
     sysMessage = SystemMessage(content=sysMessage)
+ 
+    # def assistant(state: MessagesState):
+    #     # Use memory to retrieve previous messages
+    #     previous_messages = memory.load_memory()
 
+    #     # Combine previous messages with the current state
+    #     user_message = HumanMessage(content=state["messages"][0]["content"])
+    #     current_messages = previous_messages + [user_message]
+
+    #     # Invoke the language model
+    #     response = llm_with_tools.invoke(current_messages)
+
+    #     # Save the current message to memory
+    #     memory.save_memory(current_messages)
+
+    #     return {"messages": [response]}
+    
     def assistant(state: MessagesState):
         # check if the dictionary returns the correct states
         return {"messages": [llm_with_tools.invoke([sysMessage] + state["messages"])]}
+
 
     builder = StateGraph(MessagesState)
     builder.add_node("assistant", assistant)

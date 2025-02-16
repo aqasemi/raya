@@ -1,0 +1,122 @@
+[
+    {
+        "place": "Al Masmak Fortress",
+        "description": "A 19th-century clay and mud-brick fort pivotal in Saudi history, notably recaptured by King Abdulaziz in 1902, marking the foundation of modern Saudi Arabia.",
+        "location": "Located in the ad-Dirah district, central Riyadh.",
+        "coordinates": [24.6319, 46.7130],
+        "todos": [
+            "Explore the museum's collection of artifacts, maps, and weapons.",
+            "Visit the main gate with its distinctive palmwood door.",
+            "Observe the four watchtowers offering panoramic views."
+        ],
+        "img": "https://tse2.mm.bing.net/th?id=OIP.ANlaNG7ZIzCLNcTAkaiklAHaET&pid=Api"
+    },
+    {
+        "place": "Diriyah (At-Turaif District)",
+        "description": "The original home of the Saudi royal family and the first Saudi capital, featuring mud-brick architecture and recognized as a UNESCO World Heritage Site.",
+        "location": "Northwestern outskirts of Riyadh, along Wadi Hanifa.",
+        "coordinates": [24.7340, 46.5750],
+        "todos": [
+            "Stroll through the historic At-Turaif district.",
+            "Visit Salwa Palace and Imam Mohammad bin Saud Mosque.",
+            "Learn about Saudi Arabia's early history at local museums."
+        ],
+        "img": "https://tse3.mm.bing.net/th?id=OIP.-7Vg_oEdZx_BymdRgykBXAHaEK&pid=Api"
+    },
+    {
+        "place": "National Museum of Saudi Arabia",
+        "description": "A comprehensive museum showcasing Saudi Arabia's history, culture, art, and heritage through diverse exhibits.",
+        "location": "Part of the King Abdulaziz Historical Center in central Riyadh.",
+        "coordinates": [24.6486, 46.7102],
+        "todos": [
+            "Explore eight main galleries covering Arabian history.",
+            "View ancient artifacts, manuscripts, and interactive displays.",
+            "Participate in educational programs and workshops."
+        ],
+        "img": "https://tse1.mm.bing.net/th?id=OIP.OZSV8GGj4IIPrTvm7jpUkAHaEK&pid=Api"
+    },
+    {
+        "place": "Murabba Palace",
+        "description": "Built in the 1930s, this palace served as King Abdulaziz's residence and office, exemplifying traditional Najdi architecture.",
+        "location": "Adjacent to the National Museum within the King Abdulaziz Historical Center.",
+        "coordinates": [24.6491, 46.7133],
+        "todos": [
+            "Tour the restored rooms and halls of the palace.",
+            "Examine personal belongings of King Abdulaziz on display.",
+            "Appreciate the traditional Najdi architectural elements."
+        ],
+        "img": "https://tse2.mm.bing.net/th?id=OIP.uUvng9FF-_thghI7Zm41kwHaF3&pid=Api"
+    },
+    {
+        "place": "Jabal Abu Makhruq (Camel's Eye)",
+        "description": "A natural limestone hill featuring a distinctive oval hole at its summit, surrounded by urban parkland.",
+        "location": "In the ad-Dubbat neighborhood, overlooking the al-Malazz district.",
+        "coordinates": [24.6867, 46.7310],
+        "todos": [
+            "Hike to the summit for panoramic city views.",
+            "Relax in the surrounding park area.",
+            "Learn about the site's historical significance."
+        ],
+        "img": "https://www.alamy.com/view-over-the-landscape-of-the-sahwah-wadi-to-the-jabal-abu-mahmoud-mountains-south-central-jordan-middle-east-image544084422.html"
+    },
+    {
+        "place": "King Abdulaziz Historical Center",
+        "description": "A cultural complex dedicated to the history of Saudi Arabia, featuring museums, libraries, and beautifully landscaped gardens.",
+        "location": "Located in the al-Murabba district, central Riyadh.",
+        "coordinates": [24.6463, 46.7136],
+        "todos": [
+            "Visit the King Abdulaziz Memorial Hall.",
+            "Explore the Saudi heritage exhibits.",
+            "Walk through the lush gardens and fountains."
+        ],
+        "img": "https://tse3.mm.bing.net/th?id=OIP.4jhCG2RS_1ybx2tMebDjMwHaE8&pid=Api"
+    },
+    {
+        "place": "Souq Al-Zal",
+        "description": "One of the oldest markets in Riyadh, dating back over 100 years, known for traditional goods, antiques, spices, and handicrafts.",
+        "location": "Located in the ad-Dirah district, near Al Masmak Fortress.",
+        "coordinates": [24.6305, 46.7115],
+        "todos": [
+            "Shop for authentic Saudi antiques and handicrafts.",
+            "Experience the traditional Saudi market atmosphere.",
+            "Bargain with local vendors for the best deals."
+        ],
+        "img": "https://tse4.mm.bing.net/th?id=OIP.kWCGzhXYpztS1GxY6U4XygHaE8&pid=Api"
+    },
+    {
+        "place": "Wadi Hanifa",
+        "description": "A 120 km-long valley with historical significance, featuring restored parks, palm groves, and traditional farms.",
+        "location": "Stretches across western Riyadh, with key spots in Diriyah.",
+        "coordinates": [24.6834, 46.5611],
+        "todos": [
+            "Walk along the scenic trails.",
+            "Visit historic settlements and farms.",
+            "Relax by the water features and enjoy a picnic."
+        ],
+        "img": "https://tse3.mm.bing.net/th?id=OIP.2UbU77HqfJNeHb3GSHydgAHaFj&pid=Api"
+    },
+    {
+        "place": "Riyadh Old Airport Road Murals",
+        "description": "A cultural and artistic landmark featuring large-scale murals that depict the history and heritage of Saudi Arabia.",
+        "location": "Stretching along Old Airport Road in central Riyadh.",
+        "coordinates": [24.6904, 46.7208],
+        "todos": [
+            "Take a walk and admire the street art.",
+            "Capture photos of Saudi heritage through the murals.",
+            "Explore the artistic expressions of local artists."
+        ],
+        "img": "https://tse4.mm.bing.net/th?id=OIP.LbOVaPf2upH_VpRzZwQtXAHaFj&pid=Api"
+    },
+    {
+        "place": "Al-Thumairi Gate",
+        "description": "A historical gate that was part of the old city walls of Riyadh, serving as an important entrance to the city in the past.",
+        "location": "Located in the ad-Dirah district near Souq Al-Zal.",
+        "coordinates": [24.6312, 46.7109],
+        "todos": [
+            "Visit the nearby traditional markets.",
+            "Explore the historic remnants of Riyadh’s old city.",
+            "Learn about the city's architectural history."
+        ],
+        "img": "https://tse1.mm.bing.net/th?id=OIP.UcGrWw1vNQJ-79U_2lM8iwHaE8&pid=Api"
+    }
+]

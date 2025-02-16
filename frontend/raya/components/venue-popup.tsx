@@ -8,8 +8,10 @@ interface VenuePopupProps {
     message: string
     tier: number
   }
-  hereNowCount: number
+  hereNowCount?: number
   photoUrl?: string
+  description?: string
+  isHistorical?: boolean
 }
 
 export function VenuePopup({ name, rating, price, hereNowCount, photoUrl }: VenuePopupProps) {

@@ -35,12 +35,24 @@ interface Venue {
       prefix: string
       suffix: string
     }
-  }>
+  }>,
+  categoryEnum: string
+}
+
+interface HistoricalPlace {
+  place: string
+  description: string
+  location: string
+  coordinates: [number, number]  // [latitude, longitude]
+  todos: string[]
+  img: string
 }
 
 interface MapViewProps {
   className?: string
   onPanelResize?: number
+  venuesFilter?: string | null
+  showHistoricalPlaces?: boolean
 }
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || ""
@@ -51,13 +63,15 @@ mapboxgl.setRTLTextPlugin(
   true,
 )
 
-export function MapView({ className, onPanelResize }: MapViewProps) {
+export function MapView({ className, onPanelResize, venuesFilter, showHistoricalPlaces }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
   const resizeTimer = useRef<NodeJS.Timeout>()
   const [venues, setVenues] = useState<Venue[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [historicalPlaces, setHistoricalPlaces] = useState<HistoricalPlace[]>([])
+  const historicalMarkersRef = useRef<mapboxgl.Marker[]>([])
 
   const handleResize = () => {
     if (resizeTimer.current) {
@@ -90,6 +104,20 @@ export function MapView({ className, onPanelResize }: MapViewProps) {
     }
 
     fetchVenues()
+  }, [])
+
+  useEffect(() => {
+    const fetchHistoricalPlaces = async () => {
+      try {
+        const response = await fetch("http://172.20.10.2:5000/api/historical-places")
+        const data = await response.json()
+        setHistoricalPlaces(data)
+      } catch (err) {
+        console.error("Error fetching historical places:", err)
+      }
+    }
+
+    fetchHistoricalPlaces()
   }, [])
 
   useEffect(() => {
@@ -145,6 +173,44 @@ export function MapView({ className, onPanelResize }: MapViewProps) {
   }, [venues])
 
   useEffect(() => {
+    if (!map.current || !historicalPlaces.length) return
+
+    historicalMarkersRef.current.forEach(marker => marker.remove())
+    historicalMarkersRef.current = []
+
+    if (showHistoricalPlaces) {
+      historicalPlaces.forEach((place) => {
+        const popupNode = document.createElement("div")
+        createRoot(popupNode).render(
+          <VenuePopup
+            name={place.place}
+            description={place.description}
+            photoUrl={place.img}
+            isHistorical={true}
+          />,
+        )
+
+        const popup = new mapboxgl.Popup({ offset: 25 }).setDOMContent(popupNode)
+
+        const el = document.createElement("div")
+        el.className = "historical-marker"
+        el.style.width = "24px"
+        el.style.height = "24px"
+        el.style.backgroundSize = "100%"
+        el.style.borderRadius = "50%"
+        el.style.backgroundColor = "#4a5568"
+
+        const marker = new mapboxgl.Marker(el)
+          .setLngLat([place.coordinates[1], place.coordinates[0]])
+          .setPopup(popup)
+          .addTo(map.current!)
+
+        historicalMarkersRef.current.push(marker)
+      })
+    }
+  }, [showHistoricalPlaces, historicalPlaces])
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       if (map.current) {
         map.current.resize()
@@ -162,6 +228,14 @@ export function MapView({ className, onPanelResize }: MapViewProps) {
           height: 44px;
           border-radius: 50%;
           cursor: pointer;
+        }
+        .historical-marker {
+          background-size: cover;
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          cursor: pointer;
+          border: 2px solid #2d3748;
         }
       `}</style>
       <div ref={mapContainer} className="absolute inset-0" />

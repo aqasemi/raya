@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "Raya - Your Saudi Arabia Travel Guide",
-  description: "Discover trendy and historical places in Saudi Arabia",
+  title: "Raya - Your Travel Guide in Saudi!",
+  description: "Discover trendy and historical places in Saudi",
 }
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
       <head>
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&family=Roboto+Mono&display=swap"
           rel="stylesheet"
         />
       </head>

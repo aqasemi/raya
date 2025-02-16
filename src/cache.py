@@ -4,6 +4,7 @@ import threading
 import time
 import hashlib
 from src.enums import Categories, PriceTier
+from copy import deepcopy
 from src.places_filter import filter_venues, classify_category
 
 class Cache(dict):
@@ -102,11 +103,14 @@ class GEOCache:
         return venue
 
     def get_top_venues(self, n: int=5, location: tuple[float, float] = None, category: Categories = Categories.ALL, price_tier: PriceTier = PriceTier.ALL) -> list[dict]:
-        venues = filter_venues([self.clean_venue_details(i) for i in self.venues.copy().values()])
+        venues = filter_venues([self.clean_venue_details(i) for i in deepcopy(self.venues).values()])
         venues = sorted(venues, key=lambda x: max(x.get('rating', 0), 6)/2 * x['hereNow']['count'], reverse=True)
 
+        for venue in venues:
+            venue['categoryEnum'] = [classify_category(c) for c in venue['categories']]
+
         if category != Categories.ALL:
-            venues = [i for i in venues if classify_category(i['categories']) == category]
+            venues = [i for i in venues if any(classify_category(c) == category for c in i['categories'])]
 
         if price_tier != PriceTier.ALL:
             venues = [i for i in venues if price_tier.value in i['price']]
@@ -131,7 +135,7 @@ class GEOCache:
         return comments
 
     def get_venue_by_id(self, venue_id: str) -> dict:
-        for v in self.venues.copy().values():
+        for v in deepcopy(self.venues).values():
             if v['idx'] == venue_id:
                 return v
         return {}
