@@ -37,7 +37,6 @@ def chatbot(sysMessage: str, tools: List[Callable[..., Any]]):
         except requests.exceptions.RequestException:
             return "Error fetching URL"
 
-    tools = tools
     llm = ChatOpenAI(model="gpt-4o")
     llm_with_tools = llm.bind_tools(tools)
 
