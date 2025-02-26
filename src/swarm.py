@@ -6,8 +6,9 @@ from cachetools import cached, LRUCache
 from src.cache import cache
 
 
-client_id = "ROUB2CQ40GYN2UMEOMBMOEQKEP2QYDE4BPT3YBMGBRXQMKDK"
-client_secret = "E1PZFN45VKPMTKZHQFMO2FXSCBT4HM1CI51GWTKUVQOKDUI0"
+client_id = "<client_id>"
+client_secret = "<client_secret>"
+oauth_token = "<oauth_token>"
 
 headers = {"accept": "application/json"}
 
@@ -50,7 +51,7 @@ def get_trending_venues(lat: float, lng: float, client_id: str, client_secret: s
 @cached(cache=LRUCache(maxsize=1000))
 def get_venue_details(venue_id: str) -> dict:
     print(f"Fetching venue[{venue_id[:5]}] details ")
-    url = f"https://api.foursquare.com/v2/venues/{venue_id}/?oauth_token=3GRFICKJ53DUQ3KP5JKAK4EK0CJYOQEY3EKVVGIGYFVWGMCS"
+    url = f"https://api.foursquare.com/v2/venues/{venue_id}/?oauth_token={oauth_token}"
     
     params = {
         "v": "20250101",

@@ -12,7 +12,7 @@ from langgraph.prebuilt import tools_condition, ToolNode
 from src.cache import cache
 from src.cache import Categories, PriceTier
 import os
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "api_key"
 
 
 def chatbot(sysMessage: str, tools: List[Callable[..., Any]]):

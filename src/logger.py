@@ -8,7 +8,7 @@ import rich.logging
 from telebot import TeleBot
 from html import escape
 
-SUDO = 942683545
+SUDO = "telegram user id"
 
 class Logger(logging.Logger):
     def __init__(self, logging_service, level=logging.INFO, max_size=int(3e6), bot: TeleBot = None, set_exception_hook=True):
